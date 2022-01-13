@@ -1,11 +1,11 @@
-function onResponse(res) {
-    return res.ok ? res.json() : Promise.reject(`Ошибка: ${res}`);
-}
-
 class Api {
     constructor({ url, headers }) {
         this._url = url;
         this._headers = headers;
+    }
+
+    onResponse(res) {
+        return res.ok ? res.json() : Promise.reject(`Ошибка: ${res}`);
     }
 
     // Получает все карточки
@@ -13,7 +13,7 @@ class Api {
         return fetch(`${this._url}/cards`, {
             headers: this._headers
         })
-            .then(onResponse)
+            .then(this.onResponse)
     }
 
     // Получает информацию о пользователе
@@ -21,7 +21,7 @@ class Api {
         return fetch(`${this._url}/users/me`, {
             headers: this._headers,
         })
-            .then(onResponse)
+            .then(this.onResponse)
     }
 
     // Отправляет информацию о пользователе на сервер
@@ -34,7 +34,7 @@ class Api {
                 about,
             })
         })
-            .then(onResponse)
+            .then(this.onResponse)
     }
 
     // Отправляет аватар пользователя на сервер
@@ -44,7 +44,7 @@ class Api {
             headers: this._headers,
             body: JSON.stringify({avatar}),
         })
-            .then(onResponse)
+            .then(this.onResponse)
     }
 
     // Отправляет карточку на сервер
@@ -57,7 +57,7 @@ class Api {
                 link,
             })
         })
-            .then(onResponse)
+            .then(this.onResponse)
     }
 
     // Удаляет карточку с сервера
@@ -74,7 +74,7 @@ class Api {
             method,
             headers: this._headers,
         })
-            .then(onResponse)
+            .then(this.onResponse)
     }
 }
 
