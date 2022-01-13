@@ -16,6 +16,15 @@ export default function PopupWithForm(props) {
         <h2 className="popup__header">{props.title}</h2>
         <form className="popup__form" name={props.name} noValidate>
           {props.children}
+          {props.id !== "popup__delete" ? <button type="submit" className="popup__submit-btn">
+            {props.buttonText}
+          </button> : <button
+            type="submit"
+            className="popup__submit-btn popup__delete-btn"
+            id="popup__delete"
+          >
+            Да
+          </button>}
         </form>
       </div>
     </div>
