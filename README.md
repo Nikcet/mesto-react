@@ -14,4 +14,8 @@
 * React
 * Слезы счастья
 
-[**Ссылка на Pages**](https://nikcet.github.io/mesto-react/)
+### Запустить проект:
+
+npm start
+
+~~[**Ссылка на Pages**](https://nikcet.github.io/mesto-react/)~~
