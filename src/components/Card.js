@@ -16,7 +16,7 @@ export default function Card(props) {
                 <h2 className="elements__name">{props.card.name}</h2>
                 <div className="elements__heart-wrap">
                     <button type="button" className="elements__heart"></button>
-                    <p className="elements__heart-number">{props.card.like}</p>
+                    <p className="elements__heart-number">{props.card.likes.length}</p>
                 </div>
             </div>
         </div>

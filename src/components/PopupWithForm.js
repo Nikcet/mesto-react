@@ -14,8 +14,11 @@ export default function PopupWithForm(props) {
           onClick={props.onClose}
         ></button>
         <h2 className="popup__header">{props.title}</h2>
-        <form className="popup__form" name={props.name} noValidate>
+        <form className="popup__form" name={props.name}>
           {props.children}
+          <button type="submit" className={`popup__submit-btn ${props.id === "popup_delete" ? "popup__delete-btn" : ""}`}>
+            {props.buttonText}
+          </button>
         </form>
       </div>
     </div>
