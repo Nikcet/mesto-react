@@ -42,7 +42,7 @@ export default function Main(props) {
   }
 
   return (
-    <main>
+    <main className="main">
       <section className="profile">
         <div className="profile__info-wrap">
           <div className="profile__avatar-overley">

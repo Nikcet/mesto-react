@@ -3,11 +3,14 @@ body {
 }
 
 .page {
+  display: flex;
+  flex-direction: column;
   font-size: 16px;
   font-family: "Inter", "Arial", sans-serif;
   margin: 0 auto;
   max-width: 1280px;
   min-width: 320px;
+  min-height: 100vh;
   background-color: #000;
   color: #fff;
   padding: 45px 0 60px;
