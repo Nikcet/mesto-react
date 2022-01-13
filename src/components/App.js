@@ -7,10 +7,11 @@ import PopupWithForm from "./PopupWithForm";
 import ImagePopup from "./ImagePopup";
 
 export function App() {
+  // Для ревьюера: эти названия предложены Практикумом
   const [isEditProfilePopupOpen, setProfilePopup] = React.useState(false);
   const [isAddPlacePopupOpen, setNewPlacePopup] = React.useState(false);
   const [isEditAvatarPopupOpen, setAvatarPopup] = React.useState(false);
-  const [selectedCard, setSelectedCard] = React.useState(null);
+  const [selectedCard, setSelectedCard] = React.useState("");
 
   function handleEditProfileClick() {
     setProfilePopup(true);
@@ -34,7 +35,7 @@ export function App() {
     setProfilePopup(false);
     setNewPlacePopup(false);
     setAvatarPopup(false);
-    setSelectedCard(null);
+    setSelectedCard("");
   }
 
   return (
@@ -52,6 +53,7 @@ export function App() {
         name="edit-profile"
         isOpen={isEditProfilePopupOpen}
         onClose={closeAllPopups}
+        buttonText="Сохранить"
       >
         <input
           type="text"
@@ -76,16 +78,13 @@ export function App() {
           required
         />
         <span className="popup__form-error popup__about-error"></span>
-
-        <button type="submit" className="popup__submit-btn">
-          Сохранить
-        </button>
       </PopupWithForm>
       <PopupWithForm
         title="Новое место"
         name="add-card"
         isOpen={isAddPlacePopupOpen}
         onClose={closeAllPopups}
+        buttonText="Добавить"
       >
         <input
           type="text"
@@ -108,16 +107,13 @@ export function App() {
           required
         />
         <span className="popup__form-error popup__pic-link-error"></span>
-
-        <button type="submit" className="popup__submit-btn">
-          Добавить
-        </button>
       </PopupWithForm>
       <PopupWithForm
         title="Обновить аватар"
         name="update-avatar"
         isOpen={isEditAvatarPopupOpen}
         onClose={closeAllPopups}
+        buttonText="Сохранить"
       >
         <input
           type="url"
@@ -128,11 +124,8 @@ export function App() {
           required
         />
         <span className="popup__form-error popup__pic-link-error"></span>
-        <button type="submit" className="popup__submit-btn">
-          Сохранить
-        </button>
       </PopupWithForm>
-      <PopupWithForm title="Вы уверены?" name="question">
+      <PopupWithForm title="Вы уверены?" name="question" buttonText="Да">
         <button
           type="submit"
           className="popup__submit-btn popup__delete-btn"
