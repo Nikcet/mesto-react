@@ -125,15 +125,7 @@ export function App() {
         />
         <span className="popup__form-error popup__pic-link-error"></span>
       </PopupWithForm>
-      <PopupWithForm title="Вы уверены?" name="question" buttonText="Да">
-        <button
-          type="submit"
-          className="popup__submit-btn popup__delete-btn"
-          id="popup__delete"
-        >
-          Да
-        </button>
-      </PopupWithForm>
+      <PopupWithForm title="Вы уверены?" name="question" buttonText="Да" id="popup_delete"></PopupWithForm>
       <ImagePopup card={selectedCard} onClose={closeAllPopups} />
     </div>
   );
