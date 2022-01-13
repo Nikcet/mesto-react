@@ -42,48 +42,48 @@ export default function Main(props) {
   }
 
   return (
-    <>
-      <main>
-        <section className="profile">
-          <div className="profile__info-wrap">
-            <div className="profile__avatar-overley">
-              <img src={userAvatar} alt={userName} className="profile__avatar" />
+    <main>
+      <section className="profile">
+        <div className="profile__info-wrap">
+          <div className="profile__avatar-overley">
+            <img src={userAvatar} alt={userName} className="profile__avatar" />
+            <button
+              type="button"
+              className="profile__avatar-edit-btn"
+              onClick={props.onEditAvatar}
+            ></button>
+          </div>
+          <div className="profile__info">
+            <div className="profile__info-elems">
+              <h1 className="profile__name">{userName}</h1>
               <button
                 type="button"
-                className="profile__avatar-edit-btn"
-                onClick={props.onEditAvatar}
+                className="profile__edit-button"
+                aria-label="Редактировать профиль"
+                onClick={props.onEditProfile}
               ></button>
             </div>
-            <div className="profile__info">
-              <div className="profile__info-elems">
-                <h1 className="profile__name">{userName}</h1>
-                <button
-                  type="button"
-                  className="profile__edit-button"
-                  aria-label="Редактировать профиль"
-                  onClick={props.onEditProfile}
-                ></button>
-              </div>
-              <p className="profile__description">{userDescription}</p>
-            </div>
+            <p className="profile__description">{userDescription}</p>
           </div>
-          <button
-            className="profile__add-button"
-            type="button"
-            aria-label="Добавить карточку"
-            onClick={props.onAddPlace}
-          ></button>
-        </section>
-        <section className="elements">
-          {cards.map(item => {
-            return <Card
+        </div>
+        <button
+          className="profile__add-button"
+          type="button"
+          aria-label="Добавить карточку"
+          onClick={props.onAddPlace}
+        ></button>
+      </section>
+      <section className="elements">
+        {cards.map(item => {
+          return (
+            <Card
               key={item._id}
               card={item}
               onCardClick={props.onCardClick}
             />
-          })}
-        </section>
-      </main>
-    </>
+          )
+        })}
+      </section>
+    </main>
   );
 }
