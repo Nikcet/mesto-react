@@ -7,22 +7,21 @@ import PopupWithForm from "./PopupWithForm";
 import ImagePopup from "./ImagePopup";
 
 export function App() {
-  // Для ревьюера: эти названия предложены Практикумом
-  const [isEditProfilePopupOpen, setProfilePopup] = React.useState(false);
-  const [isAddPlacePopupOpen, setNewPlacePopup] = React.useState(false);
-  const [isEditAvatarPopupOpen, setAvatarPopup] = React.useState(false);
-  const [selectedCard, setSelectedCard] = React.useState("");
+  const [isEditProfilePopupOpen, setIsEditProfilePopupOpen] = React.useState(false);
+  const [isAddPlacePopupOpen, setIsAddPlacePopupOpen] = React.useState(false);
+  const [isEditAvatarPopupOpen, setIsEditAvatarPopupOpen] = React.useState(false);
+  const [selectedCard, setSelectedCard] = React.useState(undefined);
 
   function handleEditProfileClick() {
-    setProfilePopup(true);
+    setIsEditProfilePopupOpen(true);
   }
 
   function handleAddPlaceClick() {
-    setNewPlacePopup(true);
+    setIsAddPlacePopupOpen(true);
   }
 
   function handleEditAvatarClick() {
-    setAvatarPopup(true);
+    setIsEditAvatarPopupOpen(true);
   }
 
   function handleCardClick(cardInfo) {
@@ -32,10 +31,10 @@ export function App() {
   }
 
   function closeAllPopups() {
-    setProfilePopup(false);
-    setNewPlacePopup(false);
-    setAvatarPopup(false);
-    setSelectedCard("");
+    setIsEditProfilePopupOpen(false);
+    setIsAddPlacePopupOpen(false);
+    setIsEditAvatarPopupOpen(false);
+    setSelectedCard(undefined);
   }
 
   return (
