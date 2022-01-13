@@ -4,10 +4,10 @@ import api from "../utils/Api.js";
 import Card from "./Card";
 
 export default function Main(props) {
-  const [userId, setUserId] = React.useState();
-  const [userName, setUserName] = React.useState();
-  const [userDescription, setUserDescription] = React.useState();
-  const [userAvatar, setUserAvatar] = React.useState();
+  const [userId, setUserId] = React.useState("");
+  const [userName, setUserName] = React.useState("");
+  const [userDescription, setUserDescription] = React.useState("");
+  const [userAvatar, setUserAvatar] = React.useState("");
   const [cards, setCards] = React.useState([]);
 
   React.useEffect(() => {
@@ -76,7 +76,6 @@ export default function Main(props) {
         </section>
         <section className="elements">
           {cards.map(item => {
-            // console.log(item);
             return <Card
               key={item._id}
               card={item}
