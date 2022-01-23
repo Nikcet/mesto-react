@@ -1,44 +1,31 @@
-// import avatar from "../images/kusto.jpg";
 import React from "react";
-import api from "../utils/Api.js";
 import Card from "./Card";
+import api from "../utils/Api";
+import { CurrentUserContext } from "../contexts/CurrentUserContext.js";
+import { CardsContext, LikesContext } from "../contexts/CardsContext.js";
 
 export default function Main(props) {
-  const [userId, setUserId] = React.useState("");
-  const [userName, setUserName] = React.useState("");
-  const [userDescription, setUserDescription] = React.useState("");
-  const [userAvatar, setUserAvatar] = React.useState("");
-  const [cards, setCards] = React.useState([]);
-
-  React.useEffect(() => {
-    Promise.resolve(api.getUserInfo())
-      .then(dataUser => {
-        setUserDatas(dataUser._id, dataUser.name, dataUser.about, dataUser.avatar);
-      })
-      .catch(err =>
-        console.log("Что-то не так с информацией пользователя.", err)
-      )
-  }, []);
-
-  React.useEffect(() => {
-    Promise.resolve(api.getCards())
-      .then(dataCards => {
-        setUserCards(dataCards);
-      })
-      .catch(err => {
-        console.log("Что-то не так с карточками.", err)
-      })
-  }, []);
-
-  function setUserDatas(id, name, about, avatar) {
-    setUserId(id);
-    setUserName(name);
-    setUserDescription(about);
-    setUserAvatar(avatar);
-  }
-
-  function setUserCards(cards) {
-    setCards(cards);
+  const currentUser = React.useContext(CurrentUserContext);
+  const cards = React.useContext(CardsContext);
+  // const setCardsList = React.useContext(LikesContext);
+  // const [newCard, setNewCards] = React.useState([]);
+  // console.log(cards);
+  function handleCardLike(card) {
+    // const isLiked = card.likes.some(like => like._id === currentUser._id);
+    // console.log(card, isLiked);
+    // if (!isLiked) {
+    //   api.toggleCardLike(card._id, "PUT")
+    //     .then(dataCard => {
+    //       setCardsList(dataCard);
+    //     })
+    //     .catch(err => { console.log('Что-то не так с лайком: ', err) });
+    // } else {
+    //   api.toggleCardLike(card._id, "DELETE")
+    //     .then(dataCard => {
+    //       setCardsList(dataCard);
+    //     })
+    //     .catch(err => { console.log('Что-то не так с удалением лайка: ', err) });
+    // }
   }
 
   return (
@@ -46,7 +33,7 @@ export default function Main(props) {
       <section className="profile">
         <div className="profile__info-wrap">
           <div className="profile__avatar-overley">
-            <img src={userAvatar} alt={userName} className="profile__avatar" />
+            <img src={currentUser.avatar} alt={currentUser.name} className="profile__avatar" />
             <button
               type="button"
               className="profile__avatar-edit-btn"
@@ -55,7 +42,7 @@ export default function Main(props) {
           </div>
           <div className="profile__info">
             <div className="profile__info-elems">
-              <h1 className="profile__name">{userName}</h1>
+              <h1 className="profile__name">{currentUser.name}</h1>
               <button
                 type="button"
                 className="profile__edit-button"
@@ -63,7 +50,7 @@ export default function Main(props) {
                 onClick={props.onEditProfile}
               ></button>
             </div>
-            <p className="profile__description">{userDescription}</p>
+            <p className="profile__description">{currentUser.about}</p>
           </div>
         </div>
         <button
@@ -80,6 +67,7 @@ export default function Main(props) {
               key={item._id}
               card={item}
               onCardClick={props.onCardClick}
+              onCardLike={handleCardLike}
             />
           )
         })}
