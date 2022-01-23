@@ -1,13 +1,32 @@
 import React from "react";
 import Card from "./Card";
+import api from "../utils/Api";
 import { CurrentUserContext } from "../contexts/CurrentUserContext.js";
-import { CardsContext } from "../contexts/CardsContext.js";
+import { CardsContext, LikesContext } from "../contexts/CardsContext.js";
 
 export default function Main(props) {
   const currentUser = React.useContext(CurrentUserContext);
   const cards = React.useContext(CardsContext);
-
-
+  // const setCardsList = React.useContext(LikesContext);
+  // const [newCard, setNewCards] = React.useState([]);
+  // console.log(cards);
+  function handleCardLike(card) {
+    // const isLiked = card.likes.some(like => like._id === currentUser._id);
+    // console.log(card, isLiked);
+    // if (!isLiked) {
+    //   api.toggleCardLike(card._id, "PUT")
+    //     .then(dataCard => {
+    //       setCardsList(dataCard);
+    //     })
+    //     .catch(err => { console.log('Что-то не так с лайком: ', err) });
+    // } else {
+    //   api.toggleCardLike(card._id, "DELETE")
+    //     .then(dataCard => {
+    //       setCardsList(dataCard);
+    //     })
+    //     .catch(err => { console.log('Что-то не так с удалением лайка: ', err) });
+    // }
+  }
 
   return (
     <main className="main">
@@ -48,6 +67,7 @@ export default function Main(props) {
               key={item._id}
               card={item}
               onCardClick={props.onCardClick}
+              onCardLike={handleCardLike}
             />
           )
         })}

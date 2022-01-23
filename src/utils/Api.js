@@ -68,7 +68,7 @@ class Api {
         })
     }
 
-    // Лайки крутятся, зачет за ПР9 мутится
+    // Лайки
     toggleCardLike(cardId, method) {
         return fetch(`${this._url}/cards/likes/${cardId}`, {
             method,

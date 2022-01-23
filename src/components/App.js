@@ -7,7 +7,7 @@ import PopupWithForm from "./PopupWithForm";
 import ImagePopup from "./ImagePopup";
 import api from "../utils/Api";
 import { CurrentUserContext } from "../contexts/CurrentUserContext";
-import { CardsContext } from "../contexts/CardsContext";
+import { CardsContext, LikesContext } from "../contexts/CardsContext";
 
 export function App() {
   const [currentUser, setCurrentUser] = React.useState({});
@@ -68,12 +68,14 @@ export function App() {
       <div className="page">
         <Header />
         <CardsContext.Provider value={cardsList}>
-          <Main
-            onEditProfile={handleEditProfileClick}
-            onAddPlace={handleAddPlaceClick}
-            onEditAvatar={handleEditAvatarClick}
-            onCardClick={handleCardClick}
-          />
+          <LikesContext.Provider value={setCardsList}>
+            <Main
+              onEditProfile={handleEditProfileClick}
+              onAddPlace={handleAddPlaceClick}
+              onEditAvatar={handleEditAvatarClick}
+              onCardClick={handleCardClick}
+            />
+          </LikesContext.Provider>
         </CardsContext.Provider>
         <Footer />
         <PopupWithForm
