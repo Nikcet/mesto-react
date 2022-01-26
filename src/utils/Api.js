@@ -42,7 +42,7 @@ class Api {
         return fetch(`${this._url}/users/me/avatar`, {
             method: 'PATCH',
             headers: this._headers,
-            body: JSON.stringify({avatar}),
+            body: JSON.stringify({ avatar }),
         })
             .then(this.onResponse)
     }
@@ -66,12 +66,21 @@ class Api {
             method: 'DELETE',
             headers: this._headers,
         })
+            .then(this.onResponse)
     }
 
     // Лайки
     toggleCardLike(cardId, method) {
         return fetch(`${this._url}/cards/likes/${cardId}`, {
             method,
+            headers: this._headers,
+        })
+            .then(this.onResponse)
+    }
+
+    changeLikeCardStatus(cardId, isLiked) {
+        return fetch(`${this._url}/cards/likes/${cardId}`, {
+            method: `${isLiked ? 'PUT' : 'DELETE'}`,
             headers: this._headers,
         })
             .then(this.onResponse)
