@@ -2,30 +2,32 @@ import React from "react";
 import Card from "./Card";
 import api from "../utils/Api";
 import { CurrentUserContext } from "../contexts/CurrentUserContext.js";
-import { CardsContext, LikesContext } from "../contexts/CardsContext.js";
+import { CardsContext } from "../contexts/CardsContext.js";
 
 export default function Main(props) {
   const currentUser = React.useContext(CurrentUserContext);
   const cards = React.useContext(CardsContext);
-  // const setCardsList = React.useContext(LikesContext);
-  // const [newCard, setNewCards] = React.useState([]);
-  // console.log(cards);
+
+  // Лайки
   function handleCardLike(card) {
-    // const isLiked = card.likes.some(like => like._id === currentUser._id);
-    // console.log(card, isLiked);
-    // if (!isLiked) {
-    //   api.toggleCardLike(card._id, "PUT")
-    //     .then(dataCard => {
-    //       setCardsList(dataCard);
-    //     })
-    //     .catch(err => { console.log('Что-то не так с лайком: ', err) });
-    // } else {
-    //   api.toggleCardLike(card._id, "DELETE")
-    //     .then(dataCard => {
-    //       setCardsList(dataCard);
-    //     })
-    //     .catch(err => { console.log('Что-то не так с удалением лайка: ', err) });
-    // }
+    const isLiked = card.likes.some(like => like._id === currentUser._id);
+
+    api.changeLikeCardStatus(card._id, !isLiked)
+      .then(newCard => {
+        props.onUpdateCards(state => state.map(item => item._id === card._id ? newCard : item));
+      })
+      .catch(err => { console.log("Лайки не работают", err) })
+  }
+
+  // Удаление карточек
+  function handleCardDelete(card) {
+    api.deleteCard(card._id)
+      .then(() => {
+        api.getCards()
+          .then(newCards => props.onUpdateCards(newCards))
+          .catch(err => { console.log("Не получаются карточки", err) })
+      })
+      .catch(err => { console.log("Не удаляется карточка", err) })
   }
 
   return (
@@ -68,6 +70,7 @@ export default function Main(props) {
               card={item}
               onCardClick={props.onCardClick}
               onCardLike={handleCardLike}
+              onDeleteCard={handleCardDelete}
             />
           )
         })}
