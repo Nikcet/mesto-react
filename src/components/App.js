@@ -8,9 +8,10 @@ import EditProfilePopup from "./EditProfilePopup";
 import ImagePopup from "./ImagePopup";
 import api from "../utils/Api";
 import { CurrentUserContext } from "../contexts/CurrentUserContext";
-import { CardsContext, LikesContext } from "../contexts/CardsContext";
+import { CardsContext } from "../contexts/CardsContext";
 import EditAvatarPopup from "./EditAvatarPopup";
 import AddPlacePopup from "./AddPlacePopup";
+import Loading from "../utils/Loading";
 
 export function App() {
   const [currentUser, setCurrentUser] = React.useState({});
@@ -20,6 +21,7 @@ export function App() {
   const [isAddPlacePopupOpen, setIsAddPlacePopupOpen] = React.useState(false);
   const [isEditAvatarPopupOpen, setIsEditAvatarPopupOpen] = React.useState(false);
   const [selectedCard, setSelectedCard] = React.useState(undefined);
+  const [activePopup, setActivePopup] = React.useState(null);
 
   // Монтирование информации о пользователе
   React.useEffect(() => {
@@ -45,14 +47,17 @@ export function App() {
 
   function handleEditProfileClick() {
     setIsEditProfilePopupOpen(true);
+    setActivePopup(document.querySelector('.popup_type_edit-profile'));
   }
 
   function handleAddPlaceClick() {
     setIsAddPlacePopupOpen(true);
+    setActivePopup(document.querySelector('.popup_type_add-card'));
   }
 
   function handleEditAvatarClick() {
     setIsEditAvatarPopupOpen(true);
+    setActivePopup(document.querySelector('.popup_type_update-avatar'));
   }
 
   function handleCardClick(cardInfo) {
@@ -71,32 +76,38 @@ export function App() {
 
   // Обновляет данные о пользователе
   function handleUpdateUser(datas) {
+    Loading(true, activePopup);
     api.sendProfileDatasToServer(datas.name, datas.about)
       .then(profileDatas => {
         setCurrentUser(profileDatas);
         closeAllPopups();
       })
       .catch(err => { console.log("Что-то не так с отправкой данных на сервер", err) })
+      .finally(() => {Loading(false, activePopup)})
   }
 
   // Обновляет аватар
   function handleUpdateAvatar({ avatar }) {
+    Loading(true, activePopup);
     api.sendAvatarToServer(avatar)
       .then(user => {
         setCurrentUser(user);
         closeAllPopups();
       })
       .catch(err => { console.log("Не обновляется аватар", err) })
+      .finally(() => {Loading(false, activePopup)})
   }
 
   // Добавляет карточку
   function handleAddPlaceSubmit(card) {
+    Loading(true, activePopup);
     api.postCard(card)
       .then(newCard => {
         setCardsList([newCard, ...cardsList]);
         closeAllPopups();
       })
       .catch(err => { console.log("Не добавляется карточка", err) })
+      .finally(() => {Loading(false, activePopup)})
   }
 
   return (
@@ -113,9 +124,21 @@ export function App() {
           />
         </CardsContext.Provider>
         <Footer />
-        <EditProfilePopup isOpen={isEditProfilePopupOpen} onClose={closeAllPopups} onUpdateUser={handleUpdateUser} />
-        <AddPlacePopup isOpen={isAddPlacePopupOpen} onClose={closeAllPopups} onAddPlace={handleAddPlaceSubmit} />
-        <EditAvatarPopup isOpen={isEditAvatarPopupOpen} onClose={closeAllPopups} onUpdateAvatar={handleUpdateAvatar} />
+        <EditProfilePopup
+          isOpen={isEditProfilePopupOpen}
+          onClose={closeAllPopups}
+          onUpdateUser={handleUpdateUser}
+        />
+        <AddPlacePopup
+          isOpen={isAddPlacePopupOpen}
+          onClose={closeAllPopups}
+          onAddPlace={handleAddPlaceSubmit}
+        />
+        <EditAvatarPopup
+          isOpen={isEditAvatarPopupOpen}
+          onClose={closeAllPopups}
+          onUpdateAvatar={handleUpdateAvatar}
+        />
         <PopupWithForm title="Вы уверены?" name="question" buttonText="Да" id="popup_delete"></PopupWithForm>
         <ImagePopup card={selectedCard} onClose={closeAllPopups} />
       </div>
