@@ -8,6 +8,7 @@ export default function Main(props) {
   const currentUser = React.useContext(CurrentUserContext);
   const cards = React.useContext(CardsContext);
 
+  // Лайки
   function handleCardLike(card) {
     const isLiked = card.likes.some(like => like._id === currentUser._id);
 
@@ -18,6 +19,7 @@ export default function Main(props) {
       .catch(err => { console.log("Лайки не работают", err) })
   }
 
+  // Удаление карточек
   function handleCardDelete(card) {
     api.deleteCard(card._id)
       .then(() => {

@@ -10,6 +10,7 @@ import api from "../utils/Api";
 import { CurrentUserContext } from "../contexts/CurrentUserContext";
 import { CardsContext, LikesContext } from "../contexts/CardsContext";
 import EditAvatarPopup from "./EditAvatarPopup";
+import AddPlacePopup from "./AddPlacePopup";
 
 export function App() {
   const [currentUser, setCurrentUser] = React.useState({});
@@ -20,6 +21,7 @@ export function App() {
   const [isEditAvatarPopupOpen, setIsEditAvatarPopupOpen] = React.useState(false);
   const [selectedCard, setSelectedCard] = React.useState(undefined);
 
+  // Монтирование информации о пользователе
   React.useEffect(() => {
     Promise.resolve(api.getUserInfo())
       .then(dataUser => {
@@ -30,6 +32,7 @@ export function App() {
       )
   }, []);
 
+  // Монтирование карточек
   React.useEffect(() => {
     Promise.resolve(api.getCards())
       .then(dataCards => {
@@ -58,6 +61,7 @@ export function App() {
     });
   }
 
+  // Закрывает попапы
   function closeAllPopups() {
     setIsEditProfilePopupOpen(false);
     setIsAddPlacePopupOpen(false);
@@ -65,6 +69,7 @@ export function App() {
     setSelectedCard(undefined);
   }
 
+  // Обновляет данные о пользователе
   function handleUpdateUser(datas) {
     api.sendProfileDatasToServer(datas.name, datas.about)
       .then(profileDatas => {
@@ -74,6 +79,7 @@ export function App() {
       .catch(err => { console.log("Что-то не так с отправкой данных на сервер", err) })
   }
 
+  // Обновляет аватар
   function handleUpdateAvatar({ avatar }) {
     api.sendAvatarToServer(avatar)
       .then(user => {
@@ -81,6 +87,16 @@ export function App() {
         closeAllPopups();
       })
       .catch(err => { console.log("Не обновляется аватар", err) })
+  }
+
+  // Добавляет карточку
+  function handleAddPlaceSubmit(card) {
+    api.postCard(card)
+      .then(newCard => {
+        setCardsList([newCard, ...cardsList]);
+        closeAllPopups();
+      })
+      .catch(err => { console.log("Не добавляется карточка", err) })
   }
 
   return (
@@ -98,53 +114,8 @@ export function App() {
         </CardsContext.Provider>
         <Footer />
         <EditProfilePopup isOpen={isEditProfilePopupOpen} onClose={closeAllPopups} onUpdateUser={handleUpdateUser} />
-        <PopupWithForm
-          title="Новое место"
-          name="add-card"
-          isOpen={isAddPlacePopupOpen}
-          onClose={closeAllPopups}
-          buttonText="Добавить"
-        >
-          <input
-            type="text"
-            id="popup__title"
-            className="popup__input"
-            placeholder="Название"
-            name="name"
-            minLength="2"
-            maxLength="30"
-            required
-          />
-          <span className="popup__form-error popup__title-error"></span>
-
-          <input
-            type="url"
-            id="popup__pic-link"
-            className="popup__input"
-            placeholder="Ссылка на картинку"
-            name="link"
-            required
-          />
-          <span className="popup__form-error popup__pic-link-error"></span>
-        </PopupWithForm>
+        <AddPlacePopup isOpen={isAddPlacePopupOpen} onClose={closeAllPopups} onAddPlace={handleAddPlaceSubmit} />
         <EditAvatarPopup isOpen={isEditAvatarPopupOpen} onClose={closeAllPopups} onUpdateAvatar={handleUpdateAvatar} />
-        {/* <PopupWithForm
-          title="Обновить аватар"
-          name="update-avatar"
-          isOpen={isEditAvatarPopupOpen}
-          onClose={closeAllPopups}
-          buttonText="Сохранить"
-        >
-          <input
-            type="url"
-            id="popup__ava-link"
-            className="popup__input"
-            placeholder="Ссылка на изображение"
-            name="link"
-            required
-          />
-          <span className="popup__form-error popup__pic-link-error"></span>
-        </PopupWithForm> */}
         <PopupWithForm title="Вы уверены?" name="question" buttonText="Да" id="popup_delete"></PopupWithForm>
         <ImagePopup card={selectedCard} onClose={closeAllPopups} />
       </div>

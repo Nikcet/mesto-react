@@ -1,14 +1,8 @@
 import React from "react";
 import { CurrentUserContext } from "../contexts/CurrentUserContext.js";
-import api from "../utils/Api";
 
 export default function Card(props) {
     const currentUser = React.useContext(CurrentUserContext);
-    const [card, setCard] = React.useState({});
-
-    React.useEffect(() => {
-        setCard(props.card);
-    }, [props.card]);
 
     const isOwn = props.card.owner._id === currentUser._id;
     const isLiked = props.card.likes.some(like => like._id === currentUser._id);
@@ -18,21 +12,12 @@ export default function Card(props) {
         props.onCardClick(props.card);
     }
 
-    function handleLikeClick() {
-        // props.onCardLike(props.card);
-        if (!isLiked) {
-            api.toggleCardLike(card._id, "PUT")
-                .then(dataCard => {
-                    setCard(dataCard);
-                })
-                .catch(err => { console.log('Что-то не так с лайком: ', err) });
-        } else {
-            api.toggleCardLike(card._id, "DELETE")
-                .then(dataCard => {
-                    setCard(dataCard);
-                })
-                .catch(err => { console.log('Что-то не так с удалением лайка: ', err) });
-        }
+    function handleLike() {
+        props.onCardLike(props.card);
+    }
+
+    function handleDeleteCard() {
+        props.onDeleteCard(props.card);
     }
 
     return (
@@ -41,11 +26,11 @@ export default function Card(props) {
                 alt={props.card.name}
                 className="elements__image"
                 onClick={handleClick} />
-            {isOwn && <button type="button" className="elements__delete"></button>}
+            {isOwn && <button type="button" className="elements__delete" onClick={handleDeleteCard}></button>}
             <div className="elements__wrap">
                 <h2 className="elements__name">{props.card.name}</h2>
                 <div className="elements__heart-wrap">
-                    <button type="button" className={`elements__heart ${cardLikeButtonClassName}`} onClick={handleLikeClick}></button>
+                    <button type="button" className={`elements__heart ${cardLikeButtonClassName}`} onClick={handleLike}></button>
                     <p className="elements__heart-number">{props.card.likes.length}</p>
                 </div>
             </div>
