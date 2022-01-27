@@ -14,12 +14,10 @@ export default function AddPlacePopup(props) {
         })
     }
 
-    function handleChangeName(event) {
-        setName(event.target.value);
-    }
-
-    function handleChangeLink(event) {
-        setLink(event.target.value);
+    function handleChange(event) {
+        const target = event.target;
+        const value = target.value;
+        target.name === 'name' ? setName(value) : setLink(value);
     }
 
     return (
@@ -39,7 +37,7 @@ export default function AddPlacePopup(props) {
                 name="name"
                 minLength="2"
                 maxLength="30"
-                onChange={handleChangeName}
+                onChange={handleChange}
                 value={name}
                 required
             />
@@ -51,7 +49,7 @@ export default function AddPlacePopup(props) {
                 className="popup__input"
                 placeholder="Ссылка на картинку"
                 name="link"
-                onChange={handleChangeLink}
+                onChange={handleChange}
                 value={link}
                 required
             />

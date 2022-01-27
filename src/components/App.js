@@ -14,14 +14,21 @@ import AddPlacePopup from "./AddPlacePopup";
 import Loading from "../utils/Loading";
 
 export function App() {
-  const [currentUser, setCurrentUser] = React.useState({});
+  const defaultUser = {
+    _id: '',
+    about: '',
+    avatar: '',
+    cohort: '',
+    name: '',
+  }
+  const [currentUser, setCurrentUser] = React.useState(defaultUser);
   const [cardsList, setCardsList] = React.useState([]);
 
   const [isEditProfilePopupOpen, setIsEditProfilePopupOpen] = React.useState(false);
   const [isAddPlacePopupOpen, setIsAddPlacePopupOpen] = React.useState(false);
   const [isEditAvatarPopupOpen, setIsEditAvatarPopupOpen] = React.useState(false);
   const [selectedCard, setSelectedCard] = React.useState(undefined);
-  const [activePopup, setActivePopup] = React.useState(null);
+  const [activePopup, setActivePopup] = React.useState('');
 
   // Монтирование информации о пользователе
   React.useEffect(() => {
@@ -83,7 +90,7 @@ export function App() {
         closeAllPopups();
       })
       .catch(err => { console.log("Что-то не так с отправкой данных на сервер", err) })
-      .finally(() => {Loading(false, activePopup)})
+      .finally(() => { Loading(false, activePopup) })
   }
 
   // Обновляет аватар
@@ -95,7 +102,7 @@ export function App() {
         closeAllPopups();
       })
       .catch(err => { console.log("Не обновляется аватар", err) })
-      .finally(() => {Loading(false, activePopup)})
+      .finally(() => { Loading(false, activePopup) })
   }
 
   // Добавляет карточку
@@ -107,7 +114,7 @@ export function App() {
         closeAllPopups();
       })
       .catch(err => { console.log("Не добавляется карточка", err) })
-      .finally(() => {Loading(false, activePopup)})
+      .finally(() => { Loading(false, activePopup) })
   }
 
   return (

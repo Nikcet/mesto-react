@@ -5,20 +5,18 @@ import React from "react";
 export default function EditProfilePopup(props) {
     const currentUser = React.useContext(CurrentUserContext);
 
-    const [name, setName] = React.useState("");
-    const [description, setDescription] = React.useState("");
+    const [name, setName] = React.useState('');
+    const [description, setDescription] = React.useState('');
 
     React.useEffect(() => {
         setName(currentUser.name);
         setDescription(currentUser.about);
     }, [currentUser, props.isOpen]);
 
-    function handleChangeName(event) {
-        setName(event.target.value);
-    }
-
-    function handleChangeDescription(event) {
-        setDescription(event.target.value);
+    function handleChange(event) {
+        const target = event.target;
+        const value = target.value;
+        target.name === 'name' ? setName(value) : setDescription(value);
     }
 
     function handleSubmit(event) {
@@ -47,7 +45,7 @@ export default function EditProfilePopup(props) {
                 name="name"
                 minLength="2"
                 maxLength="40"
-                onChange={handleChangeName}
+                onChange={handleChange}
                 value={name}
                 required
             />
@@ -61,7 +59,7 @@ export default function EditProfilePopup(props) {
                 name="description"
                 minLength="2"
                 maxLength="200"
-                onChange={handleChangeDescription}
+                onChange={handleChange}
                 value={description}
                 required
             />
