@@ -1,34 +1,11 @@
 import React from "react";
 import Card from "./Card";
-import api from "../utils/Api";
 import { CurrentUserContext } from "../contexts/CurrentUserContext.js";
 import { CardsContext } from "../contexts/CardsContext.js";
 
 export default function Main(props) {
   const currentUser = React.useContext(CurrentUserContext);
   const cards = React.useContext(CardsContext);
-
-  // Лайки
-  function handleCardLike(card) {
-    const isLiked = card.likes.some(like => like._id === currentUser._id);
-
-    api.changeLikeCardStatus(card._id, !isLiked)
-      .then(newCard => {
-        props.onUpdateCards(state => state.map(item => item._id === card._id ? newCard : item));
-      })
-      .catch(err => { console.log("Лайки не работают", err) })
-  }
-
-  // Удаление карточек
-  function handleCardDelete(card) {
-    api.deleteCard(card._id)
-      .then(() => {
-        api.getCards()
-          .then(newCards => props.onUpdateCards(newCards))
-          .catch(err => { console.log("Не получаются карточки", err) })
-      })
-      .catch(err => { console.log("Не удаляется карточка", err) })
-  }
 
   return (
     <main className="main">
@@ -69,8 +46,8 @@ export default function Main(props) {
               key={item._id}
               card={item}
               onCardClick={props.onCardClick}
-              onCardLike={handleCardLike}
-              onDeleteCard={handleCardDelete}
+              onCardLike={props.onCardLike}
+              onDeleteCard={props.onDeleteCard}
             />
           )
         })}
