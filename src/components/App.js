@@ -117,6 +117,28 @@ export function App() {
       .finally(() => { Loading(false, activePopup) })
   }
 
+  // Лайки
+  function handleCardLike(card) {
+    const isLiked = card.likes.some(like => like._id === currentUser._id);
+
+    api.changeLikeCardStatus(card._id, !isLiked)
+      .then(newCard => {
+        setCardsList(state => state.map(item => item._id === card._id ? newCard : item));
+      })
+      .catch(err => { console.log("Лайки не работают", err) })
+  }
+
+  // Удаление карточек
+  function handleCardDelete(card) {
+    api.deleteCard(card._id)
+      .then(() => {
+        api.getCards()
+          .then(newCards => setCardsList(newCards))
+          .catch(err => { console.log("Не получаются карточки", err) })
+      })
+      .catch(err => { console.log("Не удаляется карточка", err) })
+  }
+
   return (
     <CurrentUserContext.Provider value={currentUser}>
       <div className="page">
@@ -128,6 +150,8 @@ export function App() {
             onEditAvatar={handleEditAvatarClick}
             onCardClick={handleCardClick}
             onUpdateCards={setCardsList}
+            onCardLike={handleCardLike}
+            onDeleteCard={handleCardDelete}
           />
         </CardsContext.Provider>
         <Footer />
