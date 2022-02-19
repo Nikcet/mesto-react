@@ -12,10 +12,8 @@
 * JS
 * Figma
 * React
-* Слезы счастья
+* React Hooks
 
-### Запустить проект:
 
-npm start
 
-~~[**Ссылка на Pages**](https://nikcet.github.io/mesto-react/)~~
+[**Ссылка на Pages**](https://nikcet.github.io/mesto-react/)
